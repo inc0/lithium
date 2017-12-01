@@ -28,6 +28,12 @@ docker-compose up
 ```
 
 And that's it, wait for dib-ubuntu and dib-centos containers to finish (building images), and next time you boot server in same network from PXE, image should be installed.
+
+After it reboots from disk just use
+```bash
+ssh root@<<ip of machine>>
+```
+
 Images will be built only once. To rebuild fresh images run
 
 ```bash
