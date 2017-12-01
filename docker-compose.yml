@@ -1,0 +1,37 @@
+---
+version: '3'
+services:
+  lithium-fileserver:
+    build: ./lithium-fileserver
+    restart: always
+    ports:
+      - "8010:80"
+    volumes:
+      - "images:/usr/share/nginx/html/images"
+  dib-centos:
+    build: ./dib-centos
+    restart: "no"
+    privileged: true
+    volumes:
+      - "images:/data"
+  dib-ubuntu:
+    build: ./dib-ubuntu
+    restart: "no"
+    privileged: true
+    volumes:
+      - "images:/data"
+  pixiecore:
+    image: "danderson/pixiecore"
+    network_mode: "host"
+    command: "api http://${LITHIUM_HOST}:8000 --dhcp-no-bind"
+  lithium-server:
+    build: ./lithium-server
+    ports:
+      - "8000:8000"
+    environment:
+      - LITHIUM_IMAGE=${LITHIUM_IMAGE}
+      - LITHIUM_HOST=${LITHIUM_HOST}
+      - LITHIUM_PUBKEY=${LITHIUM_PUBKEY}
+volumes:
+  images:
+
