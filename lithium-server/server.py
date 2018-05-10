@@ -21,6 +21,13 @@ def kickstart(mac_address):
 @app.route('/v1/boot/<mac_address>')
 def index(mac_address):
     print(mac_address)
+    with open("./macs", "r") as f:
+        all_macs = f.read()
+    if mac_address in all_macs:
+        print("mac already provisioned")
+        return json.dumps({})
+    with open("./macs", "a") as f:
+        f.write(mac_address + " ")
     resp = {
             'kernel': 'http://{host_ip}:8010/pxeboot/vmlinuz'.format(host_ip=args.host_ip),
             'initrd': [
@@ -34,4 +41,6 @@ def index(mac_address):
     return json.dumps(resp)
 
 if __name__ == '__main__':
+    with open("./macs", "w") as f:
+        f.write("")
     app.run(debug=True, host="0.0.0.0", port=8000)
