@@ -1,21 +1,15 @@
 %pre --interpreter /bin/sh
 #!/bin/sh
-echo "pre-install started" > /dev/tty1
+echo "pre-install started" > /dev/ttyS0
 curl http://{{ host_ip }}:8010/images/{{ image }}.raw | dd of=/dev/sda
-echo "image downloaded" > /dev/tty1
+echo "image downloaded" > /dev/ttyS0
 mkdir /mnt/rootfs
 mount /dev/sda /mnt/rootfs
 
 {% if "ubuntu" in image %}
 sed -i -e 's/console=ttyS0//g' /mnt/rootfs/boot/grub/grub.cfg
-echo "grub updated" > /dev/tty1
+echo "grub updated" > /dev/ttyS0
 {% endif %}
-
-mkdir -p /mnt/rootfs/root/.ssh
-echo "{{ pubkey }}" >> /mnt/rootfs/root/.ssh/authorized_keys
-
-sed -i -e 's/PermitRootLogin prohibit-password/PermitRootLogin yes/g' /mnt/rootfs/etc/ssh/sshd_config
-echo "ssh set" > /dev/tty1
 
 reboot
 %end

@@ -23,7 +23,7 @@ services:
   pixiecore:
     image: "danderson/pixiecore"
     network_mode: "host"
-    command: "api http://${LITHIUM_HOST}:8000 --dhcp-no-bind"
+    command: "api http://${LITHIUM_HOST}:8000 --dhcp-no-bind --port 8100"
   lithium-server:
     build: ./lithium-server
     ports:
@@ -32,6 +32,15 @@ services:
       - LITHIUM_IMAGE=${LITHIUM_IMAGE}
       - LITHIUM_HOST=${LITHIUM_HOST}
       - LITHIUM_PUBKEY=${LITHIUM_PUBKEY}
+    volumes:
+      - "cloud-init:/etc/cloud-init"
+  cloud-init:
+    build: ./cloud-init
+    ports:
+      - "80:80"
+    volumes:
+      - "cloud-init:/etc/cloud-init"
 volumes:
   images:
+  cloud-init:
 
