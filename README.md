@@ -21,7 +21,7 @@ To start bootstrapping your nodes all you have to do is:
 
 ```bash
 export LITHIUM_IMAGE=centos7  # This is image that will be installed. Currently only centos7 and ubuntu1604 are supported
-export LITHIUM_PUBKEY=$(cat ~/.ssh/id_rsa.pub)  # Pubkey for root user (yes, root even on Ubuntu)
+export LITHIUM_PUBKEY=$(cat ~/.ssh/id_rsa.pub)  # Pubkey for lithium user
 export LITHIUM_HOST=192.168.10.1  # IP address of this node that new servers will be able to access
 
 docker-compose up
@@ -31,7 +31,7 @@ And that's it, wait for dib-ubuntu and dib-centos containers to finish (building
 
 After it reboots from disk just use
 ```bash
-ssh root@<<ip of machine>>
+ssh lithium@<<ip of machine>>
 ```
 
 Images will be built only once. To rebuild fresh images run
